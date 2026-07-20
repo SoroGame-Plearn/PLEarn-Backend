@@ -1,0 +1,227 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-size: 24px; font-weight: bold; }
+      .subtitle { font-size: 14px; font-weight: bold; }
+      .label { font-size: 12px; }
+      .small-label { font-size: 10px; }
+      .box { stroke: #333; stroke-width: 2; fill: #f0f0f0; }
+      .box-api { fill: #e3f2fd; }
+      .box-service { fill: #f3e5f5; }
+      .box-data { fill: #e8f5e9; }
+      .box-external { fill: #fff3e0; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" class="title">PLEarn Backend - System Architecture</text>
+
+  <!-- ==================== PRESENTATION LAYER ==================== -->
+  <g id="presentation-layer">
+    <text x="600" y="70" text-anchor="middle" class="subtitle">Client Layer</text>
+    <rect x="50" y="85" width="1100" height="80" class="box" rx="5"/>
+    
+    <rect x="100" y="100" width="150" height="50" class="box-api" rx="3"/>
+    <text x="175" y="125" text-anchor="middle" class="label">Web Client</text>
+    <text x="175" y="140" text-anchor="middle" class="small-label">(React/Vue)</text>
+    
+    <rect x="350" y="100" width="150" height="50" class="box-api" rx="3"/>
+    <text x="425" y="125" text-anchor="middle" class="label">Mobile Client</text>
+    <text x="425" y="140" text-anchor="middle" class="small-label">(iOS/Android)</text>
+    
+    <rect x="600" y="100" width="150" height="50" class="box-api" rx="3"/>
+    <text x="675" y="125" text-anchor="middle" class="label">Desktop Client</text>
+    <text x="675" y="140" text-anchor="middle" class="small-label">(Electron)</text>
+    
+    <rect x="850" y="100" width="180" height="50" class="box-api" rx="3"/>
+    <text x="940" y="125" text-anchor="middle" class="label">Third-party Apps</text>
+    <text x="940" y="140" text-anchor="middle" class="small-label">(OAuth 2.0)</text>
+  </g>
+
+  <!-- Arrows from clients to API -->
+  <path d="M 175 135 Q 175 180 200 200" class="arrow"/>
+  <path d="M 425 135 Q 425 180 350 200" class="arrow"/>
+  <path d="M 675 135 Q 675 180 600 200" class="arrow"/>
+  <path d="M 940 135 Q 940 180 800 200" class="arrow"/>
+
+  <!-- ==================== API LAYER ==================== -->
+  <g id="api-layer">
+    <text x="600" y="190" text-anchor="middle" class="subtitle">API Layer (NestJS on Port 3000)</text>
+    <rect x="50" y="205" width="1100" height="130" class="box" rx="5"/>
+    
+    <!-- Controllers -->
+    <rect x="80" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="150" y="245" text-anchor="middle" class="label">Auth</text>
+    <text x="150" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="150" y="280" text-anchor="middle" class="small-label">register</text>
+    <text x="150" y="295" text-anchor="middle" class="small-label">login</text>
+    
+    <rect x="240" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="310" y="245" text-anchor="middle" class="label">Users</text>
+    <text x="310" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="310" y="280" text-anchor="middle" class="small-label">getProfile</text>
+    <text x="310" y="295" text-anchor="middle" class="small-label">updateProfile</text>
+    
+    <rect x="400" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="470" y="245" text-anchor="middle" class="label">Progress</text>
+    <text x="470" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="470" y="280" text-anchor="middle" class="small-label">recordProgress</text>
+    <text x="470" y="295" text-anchor="middle" class="small-label">getActivity</text>
+    
+    <rect x="560" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="630" y="245" text-anchor="middle" class="label">Rewards</text>
+    <text x="630" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="630" y="280" text-anchor="middle" class="small-label">getRewards</text>
+    <text x="630" y="295" text-anchor="middle" class="small-label">getStats</text>
+    
+    <rect x="720" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="790" y="245" text-anchor="middle" class="label">Challenges</text>
+    <text x="790" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="790" y="280" text-anchor="middle" class="small-label">listChallenges</text>
+    <text x="790" y="295" text-anchor="middle" class="small-label">getDetails</text>
+    
+    <rect x="880" y="225" width="140" height="85" class="box-api" rx="3"/>
+    <text x="950" y="245" text-anchor="middle" class="label">Blockchain</text>
+    <text x="950" y="260" text-anchor="middle" class="small-label">Controller</text>
+    <text x="950" y="280" text-anchor="middle" class="small-label">getTxStatus</text>
+    <text x="950" y="295" text-anchor="middle" class="small-label">(Future)</text>
+  </g>
+
+  <!-- ==================== SERVICE LAYER ==================== -->
+  <g id="service-layer">
+    <text x="600" y="375" text-anchor="middle" class="subtitle">Business Logic Layer (Services)</text>
+    <rect x="50" y="390" width="1100" height="130" class="box" rx="5"/>
+    
+    <rect x="80" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="150" y="430" text-anchor="middle" class="label">Auth</text>
+    <text x="150" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="150" y="465" text-anchor="middle" class="small-label">• register</text>
+    <text x="150" y="480" text-anchor="middle" class="small-label">• login</text>
+    <text x="150" y="495" text-anchor="middle" class="small-label">• validateJWT</text>
+    
+    <rect x="240" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="310" y="430" text-anchor="middle" class="label">Users</text>
+    <text x="310" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="310" y="465" text-anchor="middle" class="small-label">• getProfile</text>
+    <text x="310" y="480" text-anchor="middle" class="small-label">• update</text>
+    <text x="310" y="495" text-anchor="middle" class="small-label">• linkWallet</text>
+    
+    <rect x="400" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="470" y="430" text-anchor="middle" class="label">Progress</text>
+    <text x="470" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="470" y="465" text-anchor="middle" class="small-label">• record</text>
+    <text x="470" y="480" text-anchor="middle" class="small-label">• getActivity</text>
+    <text x="470" y="495" text-anchor="middle" class="small-label">• → Rewards</text>
+    
+    <rect x="560" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="630" y="430" text-anchor="middle" class="label">Rewards</text>
+    <text x="630" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="630" y="465" text-anchor="middle" class="small-label">• evaluate</text>
+    <text x="630" y="480" text-anchor="middle" class="small-label">• calculateTier</text>
+    <text x="630" y="495" text-anchor="middle" class="small-label">• → Blockchain</text>
+    
+    <rect x="720" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="790" y="430" text-anchor="middle" class="label">Challenges</text>
+    <text x="790" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="790" y="465" text-anchor="middle" class="small-label">• findAll</text>
+    <text x="790" y="480" text-anchor="middle" class="small-label">• findById</text>
+    <text x="790" y="495" text-anchor="middle" class="small-label">• (Redis cached)</text>
+    
+    <rect x="880" y="410" width="140" height="95" class="box-service" rx="3"/>
+    <text x="950" y="430" text-anchor="middle" class="label">Blockchain</text>
+    <text x="950" y="445" text-anchor="middle" class="small-label">Service</text>
+    <text x="950" y="465" text-anchor="middle" class="small-label">• distributeReward</text>
+    <text x="950" y="480" text-anchor="middle" class="small-label">• submitTx</text>
+    <text x="950" y="495" text-anchor="middle" class="small-label">• Stellar SDK</text>
+  </g>
+
+  <!-- Service interaction arrows -->
+  <path d="M 220 455 L 240 455" class="arrow" stroke-width="1.5"/>
+  <path d="M 380 455 L 400 455" class="arrow" stroke-width="1.5"/>
+  <path d="M 540 455 L 560 455" class="arrow" stroke-width="1.5"/>
+  <path d="M 700 455 L 720 455" class="arrow" stroke-width="1.5"/>
+  <path d="M 860 455 L 880 455" class="arrow" stroke-width="1.5"/>
+
+  <!-- ==================== DATA LAYER ==================== -->
+  <g id="data-layer">
+    <text x="600" y="555" text-anchor="middle" class="subtitle">Data Access Layer</text>
+    <rect x="50" y="570" width="1100" height="90" class="box" rx="5"/>
+    
+    <!-- Repositories -->
+    <rect x="100" y="585" width="130" height="60" class="box-data" rx="3"/>
+    <text x="165" y="605" text-anchor="middle" class="label">User</text>
+    <text x="165" y="620" text-anchor="middle" class="label">Repository</text>
+    
+    <rect x="260" y="585" width="130" height="60" class="box-data" rx="3"/>
+    <text x="325" y="605" text-anchor="middle" class="label">Challenge</text>
+    <text x="325" y="620" text-anchor="middle" class="label">Repository</text>
+    
+    <rect x="420" y="585" width="130" height="60" class="box-data" rx="3"/>
+    <text x="485" y="605" text-anchor="middle" class="label">Progress</text>
+    <text x="485" y="620" text-anchor="middle" class="label">Repository</text>
+    
+    <rect x="580" y="585" width="130" height="60" class="box-data" rx="3"/>
+    <text x="645" y="605" text-anchor="middle" class="label">Reward</text>
+    <text x="645" y="620" text-anchor="middle" class="label">Repository</text>
+    
+    <rect x="740" y="585" width="130" height="60" class="box-data" rx="3"/>
+    <text x="805" y="605" text-anchor="middle" class="label">Activity</text>
+    <text x="805" y="620" text-anchor="middle" class="label">Repository</text>
+  </g>
+
+  <!-- ==================== PERSISTENCE LAYER ==================== -->
+  <g id="persistence-layer">
+    <rect x="50" y="680" width="350" height="90" class="box box-data" rx="5"/>
+    <text x="225" y="705" text-anchor="middle" class="subtitle">PostgreSQL</text>
+    <text x="225" y="725" text-anchor="middle" class="small-label">• users table</text>
+    <text x="225" y="740" text-anchor="middle" class="small-label">• challenges table</text>
+    <text x="225" y="755" text-anchor="middle" class="small-label">• progress table</text>
+    
+    <rect x="425" y="680" width="350" height="90" class="box box-external" rx="5"/>
+    <text x="600" y="705" text-anchor="middle" class="subtitle">Redis Cache</text>
+    <text x="600" y="725" text-anchor="middle" class="small-label">• challenges (5min TTL)</text>
+    <text x="600" y="740" text-anchor="middle" class="small-label">• auth tokens</text>
+    <text x="600" y="755" text-anchor="middle" class="small-label">• session data</text>
+    
+    <rect x="800" y="680" width="350" height="90" class="box box-external" rx="5"/>
+    <text x="975" y="705" text-anchor="middle" class="subtitle">Stellar Network</text>
+    <text x="975" y="725" text-anchor="middle" class="small-label">• Horizon API (testnet/mainnet)</text>
+    <text x="975" y="740" text-anchor="middle" class="small-label">• XLM transfers</text>
+    <text x="975" y="755" text-anchor="middle" class="small-label">• Soroban RPC (future)</text>
+  </g>
+
+  <!-- Arrows from services to data layer -->
+  <path d="M 150 505 L 165 585" class="arrow" stroke-width="1.5"/>
+  <path d="M 310 505 L 325 585" class="arrow" stroke-width="1.5"/>
+  <path d="M 470 505 L 485 585" class="arrow" stroke-width="1.5"/>
+  <path d="M 630 505 L 645 585" class="arrow" stroke-width="1.5"/>
+  <path d="M 790 505 L 805 585" class="arrow" stroke-width="1.5"/>
+
+  <!-- Arrows from repositories to storage -->
+  <path d="M 165 645 L 225 680" class="arrow" stroke-width="1.5"/>
+  <path d="M 325 645 L 425 710" class="arrow" stroke-width="1.5"/>
+  <path d="M 485 645 L 425 720" class="arrow" stroke-width="1.5"/>
+  <path d="M 645 645 L 600 680" class="arrow" stroke-width="1.5"/>
+  <path d="M 805 645 L 800 700" class="arrow" stroke-width="1.5"/>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(50, 750)">
+    <text x="0" y="0" class="subtitle">Legend:</text>
+    <rect x="0" y="10" width="20" height="20" class="box-api" rx="2"/>
+    <text x="25" y="25" class="small-label">API Layer</text>
+    
+    <rect x="140" y="10" width="20" height="20" class="box-service" rx="2"/>
+    <text x="165" y="25" class="small-label">Service Layer</text>
+    
+    <rect x="300" y="10" width="20" height="20" class="box-data" rx="2"/>
+    <text x="325" y="25" class="small-label">Data Layer</text>
+    
+    <rect x="440" y="10" width="20" height="20" class="box-external" rx="2"/>
+    <text x="465" y="25" class="small-label">External Systems</text>
+  </g>
+</svg>

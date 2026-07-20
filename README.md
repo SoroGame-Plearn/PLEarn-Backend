@@ -49,6 +49,8 @@ PLEarn Backend is the server-side layer for the PLEarn learning platform. It han
 
 ## Architecture
 
+### High-Level Overview
+
 ```
 Client
   │
@@ -67,6 +69,32 @@ NestJS API (REST)
         ▼
    Stellar Network (Testnet / Mainnet)
 ```
+
+### System Architecture Diagram
+
+For a comprehensive visual overview of the complete system architecture, including API layer, services, data access layer, and external systems, see the [System Architecture Diagram](./docs/architecture-diagram.svg).
+
+### Detailed Architecture Documentation
+
+For in-depth information about:
+- **Module descriptions and responsibilities**
+- **Data flow for key operations** (registration, challenge completion, reward distribution)
+- **Component interactions and dependencies**
+- **Technology stack details**
+- **Deployment architecture**
+- **Scalability considerations**
+
+Please refer to the [Architecture Guide](./ARCHITECTURE.md) document.
+
+### Data Flow Diagrams
+
+Detailed sequence diagrams for key workflows including:
+- User registration and login flows
+- Challenge completion and reward distribution
+- Caching strategies
+- Error handling
+
+Are available in [Data Flow Documentation](./docs/DATA-FLOW.md).
 
 ---
 
