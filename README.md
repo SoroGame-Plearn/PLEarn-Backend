@@ -233,6 +233,8 @@ All routes are prefixed with `/api/v1`. Protected routes require `Authorization:
 |--------|--------------------|------|----------------------|
 | POST   | `/auth/register`   | —    | Register a new user  |
 | POST   | `/auth/login`      | —    | Login, receive JWT   |
+| POST   | `/auth/forgot-password` | —    | Request password reset email |
+| POST   | `/auth/reset-password`  | —    | Reset password with token |
 
 ### Users
 
