@@ -19,6 +19,7 @@
 - [Caching](#caching)
 - [Database Migrations](#database-migrations)
 - [Testing](#testing)
+- [Deployment](#deployment)
 - [Roadmap](#roadmap)
 
 ---
@@ -360,6 +361,15 @@ npm run test:e2e
 ```
 
 Tests live in `test/` for e2e and alongside source files as `*.spec.ts` for unit tests.
+
+---
+
+## Deployment
+
+For a complete, step-by-step guide to deploying PLEarn Backend to production —
+covering prerequisites, environment variables, migrations, Stellar
+testnet→mainnet transition, security, monitoring, and disaster recovery — see
+[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ---
 
