@@ -17,12 +17,19 @@ export class UsersService {
       email: dto.email,
       username: dto.username,
       passwordHash: await bcrypt.hash(dto.password, 12),
+      isRefreshTokenRevoked: false,
     });
     return this.repo.save(user);
   }
 
   async findById(id: string): Promise<User> {
-    const user = await this.repo.findOneBy({ id });
+    const user = await this.repo
+      .createQueryBuilder('user')
+      .addSelect('user.refreshToken')
+      .addSelect('user.refreshTokenExpiresAt')
+      .addSelect('user.isRefreshTokenRevoked')
+      .where('user.id = :id', { id })
+      .getOne();
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
@@ -39,4 +46,23 @@ export class UsersService {
     await this.repo.update(id, dto);
     return this.findById(id);
   }
+
+  async updateRefreshToken(
+    userId: string,
+    refreshToken: string,
+    expiresAt: Date,
+  ): Promise<void> {
+    await this.repo.update(userId, {
+      refreshToken,
+      refreshTokenExpiresAt: expiresAt,
+      isRefreshTokenRevoked: false,
+    });
+  }
+
+  async revokeRefreshToken(userId: string): Promise<void> {
+    await this.repo.update(userId, {
+      isRefreshTokenRevoked: true,
+    });
+  }
 }
+

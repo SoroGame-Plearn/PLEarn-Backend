@@ -25,6 +25,15 @@ export class User {
   @Column({ default: 0 })
   totalScore: number;
 
+  @Column({ nullable: true, unique: true, select: false })
+  refreshToken: string;
+
+  @Column({ nullable: true, select: false })
+  refreshTokenExpiresAt: Date;
+
+  @Column({ default: false, select: false })
+  isRefreshTokenRevoked: boolean;
+
   @OneToMany(() => ProgressEntry, (p) => p.user)
   progress: ProgressEntry[];
 
