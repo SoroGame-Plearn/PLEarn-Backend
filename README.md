@@ -13,6 +13,7 @@
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [API Reference](#api-reference)
+- [Frontend Integration Guide](#frontend-integration-guide)
 - [Reward Logic](#reward-logic)
 - [Blockchain Integration](#blockchain-integration)
 - [Caching](#caching)
@@ -274,6 +275,16 @@ All routes are prefixed with `/api/v1`. Protected routes require `Authorization:
 | Method | Endpoint    | Auth | Description              |
 |--------|-------------|------|--------------------------|
 | GET    | `/rewards`  | ✅   | Get current user's rewards |
+
+---
+
+## Frontend Integration Guide
+
+For a comprehensive, step-by-step guide to integrating with this API — JWT lifecycle, registration/login, the challenge completion workflow, reward evaluation timing, error handling, and copy-paste code examples — see [Frontend API Integration Guide](./docs/API-INTEGRATION-GUIDE.md).
+
+Machine-readable specs for import into your tooling:
+- [OpenAPI 3.0 specification](./docs/openapi.yaml)
+- [Postman collection](./docs/postman_collection.json)
 
 ---
 
