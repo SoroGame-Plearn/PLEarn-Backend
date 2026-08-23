@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Body, Param, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -20,7 +20,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.usersService.findById(id);
   }
 }
