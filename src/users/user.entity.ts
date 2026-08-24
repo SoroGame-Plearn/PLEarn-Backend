@@ -25,6 +25,16 @@ export class User {
   @Column({ default: 0 })
   totalScore: number;
 
+  // type: 'varchar' is explicit (rather than inferred from the TS type via
+  // reflect-metadata) because a `string | null` TS type reflects as `Object`,
+  // which TypeORM/Postgres reject.
+  @Column({ type: 'varchar', nullable: true })
+  avatarUrl: string | null;
+
+  /** Storage key/path of the current avatar file, used to delete it on replace/removal. */
+  @Column({ type: 'varchar', nullable: true, select: false })
+  avatarKey: string | null;
+
   @Column({ nullable: true, unique: true, select: false })
   refreshToken: string;
 
