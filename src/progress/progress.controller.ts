@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Body, Query, UseGuards } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { RecordProgressDto } from './progress.dto';
+import { ActivityLogQueryDto } from './progress-query.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
@@ -22,8 +23,8 @@ export class ProgressController {
   @Get('activity-log')
   getActivityLog(
     @CurrentUser() user: { id: string },
-    @Query('limit') limit?: number,
+    @Query() query: ActivityLogQueryDto,
   ) {
-    return this.progressService.getActivityLog(user.id, limit);
+    return this.progressService.getActivityLog(user.id, query.limit);
   }
 }

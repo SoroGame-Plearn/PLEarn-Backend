@@ -1,17 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  Delete,
-  Get,
-  Patch,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-  UseInterceptors,
-  UploadedFile,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Patch, Body, Param, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AvatarService } from './avatar.service';
 import { UpdateUserDto } from './user.dto';
@@ -59,7 +46,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.usersService.findById(id);
   }
 }

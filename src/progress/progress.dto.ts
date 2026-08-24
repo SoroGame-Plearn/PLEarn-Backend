@@ -1,8 +1,10 @@
-import { IsString, IsEnum, IsInt, Min, IsOptional, IsObject } from 'class-validator';
+import { IsEnum, IsInt, IsObject, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { ActivityType } from './progress.entity';
 
+const MAX_SCORE = 1_000_000;
+
 export class RecordProgressDto {
-  @IsString()
+  @IsUUID('4', { message: 'challengeId must be a valid UUID' })
   challengeId: string;
 
   @IsEnum(ActivityType)
@@ -10,6 +12,7 @@ export class RecordProgressDto {
 
   @IsInt()
   @Min(0)
+  @Max(MAX_SCORE, { message: `score must not exceed ${MAX_SCORE}` })
   score: number;
 
   @IsOptional()
