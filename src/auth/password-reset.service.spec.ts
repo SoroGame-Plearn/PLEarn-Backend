@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { PasswordResetService } from './password-reset.service';
 import { PasswordResetToken } from './password-reset-token.entity';
 import { User } from '../users/user.entity';
-import { EmailService } from './email.service';
+import { EmailService } from '../common/email.service';
 
 describe('PasswordResetService', () => {
   let service: PasswordResetService;

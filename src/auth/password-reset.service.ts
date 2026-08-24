@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { PasswordResetToken } from './password-reset-token.entity';
 import { User } from '../users/user.entity';
-import { EmailService } from './email.service';
+import { EmailService } from '../common/email.service';
 
 @Injectable()
 export class PasswordResetService {

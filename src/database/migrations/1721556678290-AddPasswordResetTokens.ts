@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableIndex, TableForeignKey } from 'typeorm';
 
 export class AddPasswordResetTokens1721556678290 implements MigrationInterface {
   name = 'AddPasswordResetTokens1721556678290';
@@ -50,7 +50,7 @@ export class AddPasswordResetTokens1721556678290 implements MigrationInterface {
     // Add foreign key constraint
     await queryRunner.createForeignKey(
       'password_reset_tokens',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
@@ -61,7 +61,7 @@ export class AddPasswordResetTokens1721556678290 implements MigrationInterface {
     // Add indexes for performance
     await queryRunner.createIndex(
       'password_reset_tokens',
-      new Index({
+      new TableIndex({
         name: 'IDX_password_reset_tokens_token',
         columnNames: ['token'],
       }),
@@ -69,7 +69,7 @@ export class AddPasswordResetTokens1721556678290 implements MigrationInterface {
 
     await queryRunner.createIndex(
       'password_reset_tokens',
-      new Index({
+      new TableIndex({
         name: 'IDX_password_reset_tokens_userId',
         columnNames: ['userId'],
       }),
@@ -77,7 +77,7 @@ export class AddPasswordResetTokens1721556678290 implements MigrationInterface {
 
     await queryRunner.createIndex(
       'password_reset_tokens',
-      new Index({
+      new TableIndex({
         name: 'IDX_password_reset_tokens_expiresAt',
         columnNames: ['expiresAt'],
       }),

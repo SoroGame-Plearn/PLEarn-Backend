@@ -19,6 +19,11 @@ export class UsersController {
     return this.usersService.update(user.id, dto);
   }
 
+  @Get('me/profile-completion')
+  getMyProfileCompletion(@CurrentUser() user: { id: string }) {
+    return this.usersService.getProfileCompletion(user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findById(id);

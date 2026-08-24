@@ -25,6 +25,18 @@ export class User {
   @Column({ default: 0 })
   totalScore: number;
 
+  @Column({ type: 'text', nullable: true })
+  bio: string;
+
+  @Column({ nullable: true })
+  profilePictureUrl: string;
+
+  @Column({ default: 0 })
+  profileCompletionScore: number;
+
+  @Column({ type: 'timestamp', nullable: true })
+  profileCompletionAchievedAt: Date;
+
   @Column({ nullable: true, unique: true, select: false })
   refreshToken: string;
 
