@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { BadRequestException, ValidationError, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
@@ -15,7 +16,7 @@ function flattenValidationErrors(errors: ValidationError[], parentPath = ''): st
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -33,6 +34,12 @@ async function bootstrap() {
     }),
   );
   app.enableCors();
+
+  // Serves files written by the local storage driver (STORAGE_DRIVER=local,
+  // the default). Unused when STORAGE_DRIVER=s3.
+  app.useStaticAssets(join(process.cwd(), process.env.STORAGE_LOCAL_DIR ?? 'uploads'), {
+    prefix: '/uploads',
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }

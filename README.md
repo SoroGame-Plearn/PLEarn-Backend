@@ -222,6 +222,15 @@ npm run start:prod
 | `STELLAR_SOROBAN_RPC_URL`   | Soroban RPC URL                              | `https://soroban-testnet.stellar.org`      |
 | `STELLAR_REWARD_CONTRACT_ID`| Soroban contract ID (future use)             | —                                          |
 | `STELLAR_DISTRIBUTOR_SECRET`| Secret key of the reward distributor account | —                                          |
+| `STORAGE_DRIVER`            | `local` or `s3` — where avatar uploads go    | `local`                                    |
+| `STORAGE_LOCAL_DIR`         | Disk directory used by the `local` driver    | `uploads`                                  |
+| `STORAGE_PUBLIC_BASE_URL`   | Base URL avatar URLs are built from (`local`)| `http://localhost:3000`                    |
+| `AWS_S3_BUCKET`             | S3 bucket name (`s3` driver)                 | —                                          |
+| `AWS_REGION`                | AWS region (`s3` driver)                     | `us-east-1`                                |
+| `AWS_ACCESS_KEY_ID`         | AWS access key (`s3` driver)                 | —                                          |
+| `AWS_SECRET_ACCESS_KEY`     | AWS secret key (`s3` driver)                 | —                                          |
+| `AWS_S3_ENDPOINT`           | Custom endpoint for S3-compatible storage    | —                                          |
+| `AWS_S3_PUBLIC_BASE_URL`    | Serve avatars through a CDN/custom domain    | —                                          |
 
 ---
 
@@ -244,6 +253,8 @@ All routes are prefixed with `/api/v1`. Protected routes require `Authorization:
 |--------|----------------|------|--------------------------------|
 | GET    | `/users/me`    | ✅   | Get current user profile       |
 | PATCH  | `/users/me`    | ✅   | Update username / Stellar key  |
+| POST   | `/users/me/avatar` | ✅ | Upload/replace profile picture (multipart `file`, JPEG/PNG, ≤5MB) |
+| DELETE | `/users/me/avatar` | ✅ | Remove profile picture         |
 | GET    | `/users/:id`   | ✅   | Get any user by ID             |
 
 ### Progress
