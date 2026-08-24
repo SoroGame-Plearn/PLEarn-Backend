@@ -16,12 +16,21 @@ import jwtConfig from './config/jwt.config';
 import redisConfig from './config/redis.config';
 import stellarConfig from './config/stellar.config';
 import emailConfig from './config/email.config';
+import storageConfig from './config/storage.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig, redisConfig, stellarConfig, emailConfig],
+      load: [
+        appConfig,
+        databaseConfig,
+        jwtConfig,
+        redisConfig,
+        stellarConfig,
+        emailConfig,
+        storageConfig,
+      ],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

@@ -1,7 +1,10 @@
-import { Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { randomUUID } from 'crypto';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { AvatarService } from './avatar.service';
+import { StorageService } from '../storage/storage.service';
 import { User } from './user.entity';
 import { CreateUserDto, ProfileCompletionDto, ProfileCompletionItem, UpdateUserDto } from './user.dto';
 import { EmailService } from '../common/email.service';
@@ -18,11 +21,10 @@ const PROFILE_COMPLETION_BONUS_SCORE = 50;
 
 @Injectable()
 export class UsersService {
-  private readonly logger = new Logger(UsersService.name);
-
   constructor(
     @InjectRepository(User) private readonly repo: Repository<User>,
-    private readonly emailService: EmailService,
+    private readonly avatarService: AvatarService,
+    private readonly storageService: StorageService,
   ) {}
 
   async create(dto: CreateUserDto): Promise<User> {
@@ -61,6 +63,48 @@ export class UsersService {
   async update(id: string, dto: UpdateUserDto): Promise<User> {
     await this.repo.update(id, dto);
     return this.syncProfileCompletion(id);
+  }
+
+  async uploadAvatar(userId: string, file?: Express.Multer.File): Promise<User> {
+    if (!file) throw new BadRequestException('No file provided');
+
+    const { buffer, contentType, extension } = await this.avatarService.process(
+      file.buffer,
+      file.mimetype,
+    );
+
+    const current = await this.findWithAvatarKey(userId);
+
+    const key = `avatars/${userId}/${randomUUID()}.${extension}`;
+    const { url } = await this.storageService.upload({ key, body: buffer, contentType });
+
+    await this.repo.update(userId, { avatarUrl: url, avatarKey: key });
+
+    if (current.avatarKey) {
+      await this.storageService.delete(current.avatarKey);
+    }
+
+    return this.findById(userId);
+  }
+
+  async deleteAvatar(userId: string): Promise<User> {
+    const current = await this.findWithAvatarKey(userId);
+    if (!current.avatarKey) throw new NotFoundException('No profile picture to delete');
+
+    await this.storageService.delete(current.avatarKey);
+    await this.repo.update(userId, { avatarUrl: null, avatarKey: null });
+
+    return this.findById(userId);
+  }
+
+  private async findWithAvatarKey(id: string): Promise<User> {
+    const user = await this.repo
+      .createQueryBuilder('user')
+      .addSelect('user.avatarKey')
+      .where('user.id = :id', { id })
+      .getOne();
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
   async updateRefreshToken(
