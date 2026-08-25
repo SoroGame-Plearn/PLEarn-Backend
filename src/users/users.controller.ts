@@ -1,14 +1,33 @@
-import { Controller, Get, Patch, Body, Param, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Delete,
+  Body,
+  Param,
+  ParseUUIDPipe,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
 import { AvatarService } from './avatar.service';
 import { UpdateUserDto } from './user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { PreferencesService } from '../preferences/preferences.service';
+import { UpdateUserPreferencesDto } from '../preferences/user-preferences.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly preferencesService: PreferencesService,
+  ) {}
 
   @Get('me')
   getMe(@CurrentUser() user: { id: string }) {
@@ -24,7 +43,11 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor('file', {
       limits: { fileSize: AvatarService.maxUploadSizeBytes },
-      fileFilter: (_req, file, callback) => {
+      fileFilter: (
+        _req: unknown,
+        file: Express.Multer.File,
+        callback: (error: Error | null, acceptFile: boolean) => void,
+      ) => {
         if (!AvatarService.allowedMimeTypes.has(file.mimetype)) {
           callback(new BadRequestException('Only JPEG and PNG images are supported'), false);
           return;
@@ -43,6 +66,19 @@ export class UsersController {
   @Delete('me/avatar')
   deleteAvatar(@CurrentUser() user: { id: string }) {
     return this.usersService.deleteAvatar(user.id);
+  }
+
+  @Get('me/preferences')
+  getMyPreferences(@CurrentUser() user: { id: string }) {
+    return this.preferencesService.getOrCreate(user.id);
+  }
+
+  @Patch('me/preferences')
+  updateMyPreferences(
+    @CurrentUser() user: { id: string },
+    @Body() dto: UpdateUserPreferencesDto,
+  ) {
+    return this.preferencesService.update(user.id, dto);
   }
 
   @Get(':id')

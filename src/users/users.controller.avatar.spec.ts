@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { PreferencesService } from '../preferences/preferences.service';
 
 describe('UsersController - avatar', () => {
   let controller: UsersController;
@@ -18,7 +19,10 @@ describe('UsersController - avatar', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [{ provide: UsersService, useValue: usersService }],
+      providers: [
+        { provide: UsersService, useValue: usersService },
+        { provide: PreferencesService, useValue: {} },
+      ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);

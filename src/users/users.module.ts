@@ -5,9 +5,10 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { AvatarService } from './avatar.service';
 import { StorageModule } from '../storage/storage.module';
+import { PreferencesModule } from '../preferences/preferences.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), StorageModule],
+  imports: [TypeOrmModule.forFeature([User]), StorageModule, PreferencesModule],
   providers: [UsersService, AvatarService],
   controllers: [UsersController],
   exports: [UsersService],
