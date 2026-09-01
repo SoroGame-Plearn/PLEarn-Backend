@@ -11,6 +11,7 @@ A practical, end-to-end guide for frontend developers integrating with the PLEar
   - [Account Recovery (Forgot / Reset Password)](#account-recovery-forgot--reset-password)
 - [Challenge Completion Workflow](#challenge-completion-workflow)
 - [Reward Evaluation Timing & Status Transitions](#reward-evaluation-timing--status-transitions)
+- [User Preferences](#user-preferences)
 - [Integration Examples](#integration-examples)
 - [Error Handling & Status Codes](#error-handling--status-codes)
 - [Postman Collection & OpenAPI Spec](#postman-collection--openapi-spec)
@@ -304,6 +305,72 @@ async function completeChallenge(token, challengeId, score, metadata) {
   // reward evaluation already happened server-side — just re-fetch to display it
   const rewards = await getRewards(token);
   return rewards[0]; // most recent reward, if any was created
+}
+```
+
+---
+
+## User Preferences
+
+Every user has a `UserPreferences` record (created lazily on first access, with sensible defaults) covering notifications, appearance, locale, and privacy. Preferences are stored server-side, so they persist across sessions and devices — no client-side storage is required.
+
+### Get current preferences
+
+```http
+GET /api/v1/users/me/preferences
+Authorization: Bearer <accessToken>
+```
+
+**Response `200`** (defaults shown for a user who has never updated preferences):
+
+```json
+{
+  "id": "b1f2c3d4-5678-90ab-cdef-1234567890ab",
+  "userId": "a1f2c3d4-5678-90ab-cdef-1234567890ab",
+  "emailNotificationsEnabled": true,
+  "theme": "system",
+  "language": "en",
+  "profileVisibility": "public",
+  "activityVisibility": "public",
+  "createdAt": "2026-08-01T12:00:00.000Z",
+  "updatedAt": "2026-08-01T12:00:00.000Z"
+}
+```
+
+### Update preferences
+
+```http
+PATCH /api/v1/users/me/preferences
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+
+{
+  "emailNotificationsEnabled": false,
+  "theme": "dark",
+  "language": "en-US",
+  "profileVisibility": "private",
+  "activityVisibility": "friends_only"
+}
+```
+
+All fields are optional — send only the ones you want to change (unrecognized fields are rejected with `400`). Field reference:
+
+| Field | Type | Allowed values | Default | Notes |
+|---|---|---|---|---|
+| `emailNotificationsEnabled` | boolean | `true` / `false` | `true` | Toggles account email notifications. |
+| `theme` | string | `light`, `dark`, `system` | `system` | Client UI theme preference. |
+| `language` | string | ISO 639-1 code, optionally with a region (`en`, `en-US`, `fr-CA`, …) | `en` | Clients should localize their UI using this value; include it as `Accept-Language` (or an equivalent) on subsequent requests if you want server-rendered content (e.g. emails) in that language. |
+| `profileVisibility` | string | `public`, `private`, `friends_only` | `public` | Controls who can see the user's profile. |
+| `activityVisibility` | string | `public`, `private`, `friends_only` | `public` | Controls who can see the user's challenge/progress activity. |
+
+**Response `200`**: the full, updated preferences object (same shape as `GET`).
+
+**Response `400`**: validation failure, e.g.:
+
+```json
+{
+  "message": ["theme must be one of: light, dark, system"],
+  "error": "Validation Failed"
 }
 ```
 
