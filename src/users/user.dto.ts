@@ -34,4 +34,26 @@ export class UpdateUserDto {
   @IsOptional()
   @IsStellarPublicKey()
   stellarPublicKey?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  bio?: string;
+
+  @IsOptional()
+  @IsUrl()
+  profilePictureUrl?: string;
+}
+
+export interface ProfileCompletionItem {
+  key: string;
+  label: string;
+  completed: boolean;
+}
+
+export class ProfileCompletionDto {
+  percentage: number;
+  isComplete: boolean;
+  items: ProfileCompletionItem[];
+  achievedAt: Date | null;
 }
